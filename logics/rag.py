@@ -1,3 +1,6 @@
+__import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 from langchain.text_splitter import RecursiveJsonSplitter
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_chroma import Chroma
@@ -44,18 +47,15 @@ def create_vector_store(file):
     
     return vector_store
 
-if not "./chroma_langchain_db":
-    st.write("Creating vector store... Please upload a .csv file in the Main page.")
 
-else:
-    # load the vector store
-    db = Chroma("pictsense_store",
-        embedding_function=embeddings_model,
-        persist_directory= "./chroma_langchain_db")
+# load the vector store
+db = Chroma("pictsense_store",
+    embedding_function=embeddings_model,
+    persist_directory= "./chroma_langchain_db")
 
-    qa_chain = RetrievalQA.from_chain_type(
-            ChatOpenAI(model='gpt-4o-mini'),
-            retriever=db.as_retriever(k=5),
-            return_source_documents=True,
-            chain_type="stuff"
-        )
+qa_chain = RetrievalQA.from_chain_type(
+        ChatOpenAI(model='gpt-4o-mini'),
+        retriever=db.as_retriever(k=5),
+        return_source_documents=True,
+        chain_type="stuff"
+    )
