@@ -7,7 +7,7 @@ import json
 
 st.title("Query Page")
 
-while not st.session_state['file']:
+if 'file' not in st.session_state:
     st.warning("Please upload a .csv file in the Main page.")
 
 # Check if the file exists in session state
