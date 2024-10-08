@@ -1,0 +1,1 @@
+This is a LLM-based analytical tool for unstuctured, open-ended survey responses.
