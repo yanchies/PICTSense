@@ -59,6 +59,8 @@ if st.session_state['file']:
         except Exception as e:
             st.error(f"Error retrieving answer: {e}")
 
+else:
+    st.warning("Please upload a .csv file in the Main page.")
 
 
 
