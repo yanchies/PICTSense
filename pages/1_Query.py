@@ -7,6 +7,9 @@ import json
 
 st.title("Query Page")
 
+while not st.session_state['file']:
+    st.warning("Please upload a .csv file in the Main page.")
+
 # Check if the file exists in session state
 if st.session_state['file']:
     file = st.session_state['file']
@@ -59,8 +62,7 @@ if st.session_state['file']:
         except Exception as e:
             st.error(f"Error retrieving answer: {e}")
 
-else:
-    st.warning("Please upload a .csv file in the Main page.")
+
 
 
 
