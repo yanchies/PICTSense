@@ -44,14 +44,18 @@ def create_vector_store(file):
     
     return vector_store
 
-# load the vector store
-db = Chroma("pictsense_store",
-    embedding_function=embeddings_model,
-    persist_directory= "./chroma_langchain_db")
+if not "./chroma_langchain_db":
+    st.write("Creating vector store... Please upload a .csv file in the Main page.")
 
-qa_chain = RetrievalQA.from_chain_type(
-        ChatOpenAI(model='gpt-4o-mini'),
-        retriever=db.as_retriever(k=5),
-        return_source_documents=True,
-        chain_type="stuff"
-    )
+else:
+    # load the vector store
+    db = Chroma("pictsense_store",
+        embedding_function=embeddings_model,
+        persist_directory= "./chroma_langchain_db")
+
+    qa_chain = RetrievalQA.from_chain_type(
+            ChatOpenAI(model='gpt-4o-mini'),
+            retriever=db.as_retriever(k=5),
+            return_source_documents=True,
+            chain_type="stuff"
+        )
