@@ -112,9 +112,9 @@ def process_responses(df, json_file_path, batch_size=100):
         for future in concurrent.futures.as_completed(futures):
             sentiments, topics = future.result()
             for j, sentiment in enumerate(sentiments):
-                response_index = batch.index[j] - 1  # Get original index for each response
+                response_index = i + j  # Get original index for each response
                 results.append({
-                    "response": batch.at[response_index, 'OER'],
+                    "response": df.loc[response_index, 'OER'],
                     "sentiment": sentiment,
                     "topic": topics[j] if j < len(topics) else "N/A"
                 })
@@ -126,6 +126,7 @@ def process_responses(df, json_file_path, batch_size=100):
     print(f"JSON file saved to {json_file_path}")
     st.success("Successfully added new inputs!")
     return json_file_path
+
 
 def get_df(json_file_path):
     df = pd.read_json(json_file_path)
