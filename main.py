@@ -14,15 +14,17 @@ def main():
 
     st.title("PICTSense - Analytical Tool for Open-Ended Responses")
     # file uploader widget
-    file = st.file_uploader(label="Upload a .csv file", type=['csv'])
     
+    # file = st.file_uploader(label="Upload a .csv file", type=['csv'])
+    
+    if 'file' not in st.session_state:
+        file = st.file_uploader(label="Upload a .csv file", type=['csv'])
+        st.success("File uploaded successfully!")
+        st.session_state['file'] = json_file_path
+        st.divider()
+
     if file is not None:
         csv_file_path, json_file_path = file_uploader(file)
-        if 'file' not in st.session_state:
-            st.session_state['file'] = json_file_path
-        
-        st.success("File uploaded successfully!")
-        st.divider()
         df = pd.read_csv(csv_file_path)  # Load your CSV file
         json_file_path = process_responses(df, json_file_path)
 
