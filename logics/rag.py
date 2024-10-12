@@ -8,6 +8,7 @@ from langchain.chains import RetrievalQA
 import json
 import streamlit as st
 import shutil
+import os
 
 splitter = RecursiveJsonSplitter(max_chunk_size=500)
 
@@ -28,7 +29,7 @@ def create_vector_store(file, force_create=False):
     documents = init_split(file)
 
     # to delete the old vector store
-    if db.check_persist_directory("./chroma_langchain_db"):
+    if os.path.exists("./chroma_langchain_db"):
         shutil.rmtree("./chroma_langchain_db")
     
     # Create new vector store from documents
