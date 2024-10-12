@@ -39,10 +39,14 @@ else:
 
         if result['source_documents']:
             for source in result['source_documents']:
-                st.write(f"**Response ID:** {source.page_content["response_id"]}")
-                st.write(f"**Response:** {source.page_content["response"]}")
-                st.write(f"**Sentiment Score:** {source.page_content["sentiment"]}")
-                st.write(f"**Topic:** {source.page_content["topic"]}")
+                reponse_id = source.page_content["response_id"]
+                response = source.page_content["response"]
+                sentiment = source.page_content["sentiment"]
+                topic = source.page_content["topic"]
+                st.write(f"**Response ID:** {reponse_id}")
+                st.write(f"**Response:** {response}")
+                st.write(f"**Sentiment Score:** {sentiment}")
+                st.write(f"**Topic:** {topic}")
                 st.divider()
 
         # if result['result'] != "I don't know.":
