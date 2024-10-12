@@ -107,7 +107,7 @@ def process_responses(df, json_file_path, batch_size=100):
         for j, sentiment in enumerate(sentiments):
             response_index = start_index + j  # Calculate correct original index
             batch_results.append({
-                "index": "resonse_" + str(response_index + 1),
+                "response_id": str(response_index + 1),
                 "response": df.loc[response_index, 'OER'],
                 "sentiment": sentiment,
                 "topic": topics[j] if j < len(topics) else "N/A"
