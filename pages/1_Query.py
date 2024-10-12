@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from logics.functions import get_df
 from logics.rag import qa_chain, db, create_vector_store
+import json
 
 st.title("Query Page")
 
@@ -39,10 +40,11 @@ else:
 
         if result['source_documents']:
             for source in result['source_documents']:
-                reponse_id = source.page_content["response_id"]
-                response = source.page_content["response"]
-                sentiment = source.page_content["sentiment"]
-                topic = source.page_content["topic"]
+                data = json.loads(source.page_content)
+                reponse_id = data["response_id"]
+                response = data["response"]
+                sentiment = data["sentiment"]
+                topic = data["topic"]
                 st.write(f"**Response ID:** {reponse_id}")
                 st.write(f"**Response:** {response}")
                 st.write(f"**Sentiment Score:** {sentiment}")
