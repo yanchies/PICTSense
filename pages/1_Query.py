@@ -39,28 +39,35 @@ else:
         st.subheader(f"**Sources:** ")
         st.write(result)
 
-        if result['result'] != "I don't know.":
-            ids = []
-            for i, doc in enumerate(result["source_documents"]):
-                content = json.loads(doc.page_content)
+        if result['source_documents']:
+            for source in result['source_documents']:
+                source_name = source.metadata['source']
+                st.write(f"**{source_name}**")
+                st.write(source.page_content)
+                st.divider()
+
+        # if result['result'] != "I don't know.":
+        #     ids = []
+        #     for i, doc in enumerate(result["source_documents"]):
+        #         content = json.loads(doc.page_content)
                 
-                for id, response_str in content.items():
-                    response_data = json.loads(response_str)
-                    if not response_data["response"]:
-                        continue
-                    if id in ids:
-                        continue
-                    ids.append(id)
-                    st.write(f"**Source {len(ids)}:**")
-                    response_text = response_data["response"]
-                    sentiment = response_data["sentiment"]
-                    topic = response_data["topic"]
+        #         for id, response_str in content.items():
+        #             response_data = json.loads(response_str)
+        #             if not response_data["response"]:
+        #                 continue
+        #             if id in ids:
+        #                 continue
+        #             ids.append(id)
+        #             st.write(f"**Source {len(ids)}:**")
+        #             response_text = response_data["response"]
+        #             sentiment = response_data["sentiment"]
+        #             topic = response_data["topic"]
                     
-                    st.write(f"**{id}:** {response_text}")
-                    st.write(f"**Sentiment Score:** {sentiment}")
-                    st.write(f"**Topic:** {topic}")
-                    st.write(f"**Raw:** {response_data}")
-                    st.divider()
+        #             st.write(f"**{id}:** {response_text}")
+        #             st.write(f"**Sentiment Score:** {sentiment}")
+        #             st.write(f"**Topic:** {topic}")
+        #             st.write(f"**Raw:** {response_data}")
+        #             st.divider()
                     
         # except Exception as e:
         #     st.error(f"Error retrieving answer: {e}")
