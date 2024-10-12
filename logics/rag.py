@@ -15,10 +15,6 @@ def init_split(json_file_path):
     with open(json_file_path, 'r') as f:
         data = json.load(f)
     documents = splitter.create_documents([data])
-    
-    # Check if the documents were created successfully
-    if documents:
-        st.write(f"Total documents created: {len(documents)}")
     return documents
 
 embeddings_model = OpenAIEmbeddings(model='text-embedding-3-small')
@@ -27,7 +23,6 @@ def create_vector_store(file, force_create=False):
     documents = init_split(file)
     
     # Create new vector store from documents
-    st.write("Creating new vector store...")
     vector_store = Chroma.from_documents(
         collection_name="pictsense_store",
         documents=documents,
