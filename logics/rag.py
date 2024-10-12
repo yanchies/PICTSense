@@ -29,14 +29,6 @@ embeddings_model = OpenAIEmbeddings(model='text-embedding-3-small')
 
 def create_vector_store(file, force_create=False):
     documents = init_split(file)
-
-    # to delete the old vector store
-    if os.path.exists("./chroma_langchain_db"):
-        if any(os.scandir("./chroma_langchain_db")):  # Check if the directory is not empty
-            # Delete all files in the directory
-            for item in os.scandir("./chroma_langchain_db"):
-                if item.is_file():
-                    os.remove(item.path)
     
     # Create new vector store from documents
     st.write("Creating new vector store...")
