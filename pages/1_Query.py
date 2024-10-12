@@ -43,7 +43,7 @@ else:
                     content = json.loads(doc.page_content)
                     
                     for id, response_data in content.items():
-                        if not response_data.get("response"):
+                        if not response_data["response"]:
                             continue
                         if id in ids:
                             continue
