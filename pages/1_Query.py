@@ -41,7 +41,7 @@ else:
 
         if result['source_documents']:
             for source in result['source_documents']:
-                source_name = source.metadata['source']
+                source_name = source.metadata['response_id']
                 st.write(f"**{source_name}**")
                 st.write(source.page_content)
                 st.divider()
