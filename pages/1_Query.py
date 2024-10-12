@@ -39,9 +39,10 @@ else:
 
         if result['source_documents']:
             for source in result['source_documents']:
-                source_name = source.metadata
-                st.write(f"**{source_name}**")
-                st.write(source.page_content)
+                st.write(f"**Response ID:** {source.page_content["response_id"]}")
+                st.write(f"**Response:** {source.page_content["response"]}")
+                st.write(f"**Sentiment Score:** {source.page_content["sentiment"]}")
+                st.write(f"**Topic:** {source.page_content["topic"]}")
                 st.divider()
 
         # if result['result'] != "I don't know.":
