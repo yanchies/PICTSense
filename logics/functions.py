@@ -120,9 +120,12 @@ def process_responses(df, json_file_path, batch_size=100):
                     "topic": topics[j] if j < len(topics) else "N/A"
                 })
 
-    # Convert results to DataFrame and reorder columns
+    # Convert results to DataFrame
     results_df = pd.DataFrame(results)
+
+    # Ensure correct column order and reset index to avoid extra column
     results_df = results_df[['response_id', 'response', 'sentiment', 'topic']]
+    results_df.reset_index(drop=True, inplace=True)  # Remove old index
 
     # Write results to JSON in one go
     with open(json_file_path, 'w', encoding='utf-8') as jsonf:
