@@ -126,10 +126,9 @@ def process_responses(df, json_file_path, batch_size=100):
     # Ensure correct column order and reset index to avoid extra column
     results_df = results_df[['response_id', 'response', 'sentiment', 'topic']]
     results_df.reset_index(drop=True, inplace=True)  # Remove old index
-
     # Write results to JSON in one go
     with open(json_file_path, 'w', encoding='utf-8') as jsonf:
-        json.dump(results, jsonf, ensure_ascii=False, indent=4)
+        json.dump(results_df.to_dict(orient='records'), jsonf, ensure_ascii=False, indent=4)
 
     print(f"JSON file saved to {json_file_path}")
     st.success("Successfully added new inputs!")
