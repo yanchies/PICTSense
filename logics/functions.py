@@ -26,7 +26,7 @@ def analyze_sentiment_batch(responses):
         # Call the OpenAI API for each response
         try:
             response = client.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model="gpt-4o-mini",
                 messages=[message],
                 max_tokens=60
             )
