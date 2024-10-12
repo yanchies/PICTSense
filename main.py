@@ -2,7 +2,7 @@
 import streamlit as st
 import pandas as pd
 from logics.file_uploader import file_uploader
-from logics.functions import process_responses, get_df
+from logics.functions import process_responses
 
 def main():
     # region <--------- Streamlit App Configuration --------->

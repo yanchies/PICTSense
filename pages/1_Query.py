@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-from logics.functions import get_df
 from logics.rag import qa_chain, db, create_vector_store
 import json
 
