@@ -37,8 +37,8 @@ else:
             st.subheader("**Answer:**")
             st.write(f"{result['result']}")
             st.subheader(f"**Sources:** ")
-            st.write(result["source_documents"])
-            
+            st.write(result)
+
             if result['result'] != "I don't know.":
                 ids = []
                 for i, doc in enumerate(result["source_documents"]):
