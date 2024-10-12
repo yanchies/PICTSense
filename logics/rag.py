@@ -7,10 +7,6 @@ from langchain_chroma import Chroma
 from langchain.chains import RetrievalQA
 import json
 import streamlit as st
-import os
-import chromadb
-
-chromadb.api.client.SharedSystemClient.clear_system_cache()
 
 splitter = RecursiveJsonSplitter(max_chunk_size=500)
 
