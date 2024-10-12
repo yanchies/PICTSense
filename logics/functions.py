@@ -95,7 +95,7 @@ def identify_topic_batch(responses):
     return results
 
 def process_responses(df, json_file_path, batch_size=100):
-    results = []  # List to accumulate results
+    result = {}  # Dictionary to accumulate results
 
     def process_batch(batch):
         responses = batch['OER'].tolist()
@@ -113,26 +113,20 @@ def process_responses(df, json_file_path, batch_size=100):
             sentiments, topics = future.result()
             for j, sentiment in enumerate(sentiments):
                 response_index = batch.index[j]  # Get original index for each response
-                results.append({
-                    "response_id": response_index,  # Original index as response_id
+                result[response_index + 1] = {
                     "response": batch.at[response_index, 'OER'],
                     "sentiment": sentiment,
                     "topic": topics[j] if j < len(topics) else "N/A"
-                })
+                }
 
-    # Convert results to DataFrame
-    results_df = pd.DataFrame(results)
-
-    # Ensure correct column order and reset index to avoid extra column
-    results_df = results_df[['response_id', 'response', 'sentiment', 'topic']]
-    results_df.reset_index(drop=True, inplace=True)  # Remove old index
     # Write results to JSON in one go
     with open(json_file_path, 'w', encoding='utf-8') as jsonf:
-        json.dump(results_df.to_dict(orient='records'), jsonf, ensure_ascii=False, indent=4)
+        json.dump(result, jsonf, ensure_ascii=False, indent=4)
 
     print(f"JSON file saved to {json_file_path}")
     st.success("Successfully added new inputs!")
     return json_file_path
+
     # result = {}
     # # Process in batches
     # for i in range(0, len(df), batch_size):
