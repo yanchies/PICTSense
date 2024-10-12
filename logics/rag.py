@@ -7,8 +7,6 @@ from langchain_chroma import Chroma
 from langchain.chains import RetrievalQA
 import json
 import streamlit as st
-import os
-import shutil
 
 splitter = RecursiveJsonSplitter(max_chunk_size=500)
 
@@ -26,13 +24,6 @@ embeddings_model = OpenAIEmbeddings(model='text-embedding-3-small')
 def create_vector_store(file, force_create=False):
     documents = init_split(file)
 
-    # Define the persist directory
-    persist_directory = "./chroma_langchain_db"
-
-    # Check if the persist directory exists and delete it if necessary
-    if os.path.exists(persist_directory):
-        shutil.rmtree(persist_directory)  # Delete existing directory
-        
     # Create new vector store from documents
     vector_store = Chroma.from_documents(
         collection_name="pictsense_store",
