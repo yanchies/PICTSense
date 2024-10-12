@@ -95,35 +95,33 @@ def identify_topic_batch(responses):
     return results
 
 def process_responses(df, json_file_path, batch_size=100):
-    result = {}
+    results = []  # List to accumulate results
 
     def process_batch(batch):
-        responses = batch['OER'].tolist()  
+        responses = batch['OER'].tolist()
         sentiments = analyze_sentiment_batch(responses)
         topics = identify_topic_batch(responses)
+        return sentiments, topics
 
-        # Combine results for each response in the batch
-        for j, row in enumerate(batch.itertuples(index=False)):
-            result[f"response_{row.Index}"] = {  # Use row.Index for consistent keys
-                "response": row.OER,
-                "sentiment": sentiments[j] if j < len(sentiments) else "N/A",
-                "topic": topics[j] if j < len(topics) else "N/A"
-            }
-
-    # Use ThreadPoolExecutor for parallel processing of batches
     with ThreadPoolExecutor() as executor:
         futures = []
         for i in range(0, len(df), batch_size):
             batch = df.iloc[i:i + batch_size]
             futures.append(executor.submit(process_batch, batch))
 
-        # Wait for all futures to complete
         for future in concurrent.futures.as_completed(futures):
-            future.result()  # Ensuring any exceptions are raised
+            sentiments, topics = future.result()
+            for j, sentiment in enumerate(sentiments):
+                response_index = batch.index[j]  # Get original index for each response
+                results.append({
+                    "response": batch.at[response_index, 'OER'],
+                    "sentiment": sentiment,
+                    "topic": topics[j] if j < len(topics) else "N/A"
+                })
 
-    # Final write to JSON file
+    # Write results to JSON in one go
     with open(json_file_path, 'w', encoding='utf-8') as jsonf:
-        json.dump(result, jsonf, ensure_ascii=False, indent=4)
+        json.dump(results, jsonf, ensure_ascii=False, indent=4)
 
     print(f"JSON file saved to {json_file_path}")
     st.success("Successfully added new inputs!")
