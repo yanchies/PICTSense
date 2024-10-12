@@ -95,66 +95,30 @@ def identify_topic_batch(responses):
     return results
 
 def process_responses(df, json_file_path, batch_size=100):
-    results = []  # List to accumulate results
+    result = {}
+    # Process in batches
+    for i in range(0, len(df), batch_size):
+        batch = df.iloc[i:i + batch_size]
+        responses = batch['OER'].tolist()  
 
-    def process_batch(batch):
-        responses = batch['OER'].tolist()
         sentiments = analyze_sentiment_batch(responses)
         topics = identify_topic_batch(responses)
-        
-        # Collect results for the current batch
-        return [
-            {
-                "response": response,
+
+        # Combine results for each response in the batch
+        for j, row in enumerate(batch.itertuples(index=False)):
+            result[f"response_{i + j + 1}"] = {
+                "response": row.OER,
                 "sentiment": sentiments[j] if j < len(sentiments) else "N/A",
                 "topic": topics[j] if j < len(topics) else "N/A"
             }
-            for j, response in enumerate(responses)
-        ]
 
-    with ThreadPoolExecutor() as executor:
-        futures = []
-        for i in range(0, len(df), batch_size):
-            batch = df.iloc[i:i + batch_size]
-            futures.append(executor.submit(process_batch, batch))
-
-        for future in concurrent.futures.as_completed(futures):
-            results.extend(future.result())  # Extend results with the batch results
-
-    # Convert results to DataFrame
-    results_df = pd.DataFrame(results)
-
-    # Write results to JSON in one go
+    # Final write to JSON file
     with open(json_file_path, 'w', encoding='utf-8') as jsonf:
-        json.dump(results_df.to_dict(orient='records'), jsonf, ensure_ascii=False, indent=4)
+        json.dump(result, jsonf, ensure_ascii=False, indent=4)
 
     print(f"JSON file saved to {json_file_path}")
     st.success("Successfully added new inputs!")
     return json_file_path
-    # result = {}
-    # # Process in batches
-    # for i in range(0, len(df), batch_size):
-    #     batch = df.iloc[i:i + batch_size]
-    #     responses = batch['OER'].tolist()  
-
-    #     sentiments = analyze_sentiment_batch(responses)
-    #     topics = identify_topic_batch(responses)
-
-    #     # Combine results for each response in the batch
-    #     for j, row in enumerate(batch.itertuples(index=False)):
-    #         result[f"response_{i + j + 1}"] = {
-    #             "response": row.OER,
-    #             "sentiment": sentiments[j] if j < len(sentiments) else "N/A",
-    #             "topic": topics[j] if j < len(topics) else "N/A"
-    #         }
-
-    # # Final write to JSON file
-    # with open(json_file_path, 'w', encoding='utf-8') as jsonf:
-    #     json.dump(result, jsonf, ensure_ascii=False, indent=4)
-
-    # print(f"JSON file saved to {json_file_path}")
-    # st.success("Successfully added new inputs!")
-    # return json_file_path
 
 def get_df(json_file_path):
     df = pd.read_json(json_file_path)
