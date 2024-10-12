@@ -14,7 +14,7 @@ def init_split(json_file_path):
     """Initialize document splitting from JSON file."""
     with open(json_file_path, 'r') as f:
         data = json.load(f)
-    documents = splitter.create_documents([data])
+    documents = splitter.create_documents(data)
     return documents
 embeddings_model = OpenAIEmbeddings(model='text-embedding-3-small')
 
