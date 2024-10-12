@@ -95,7 +95,7 @@ def identify_topic_batch(responses):
     return results
 
 def process_responses(df, json_file_path, batch_size=100):
-    result = {}
+    result = []
     def process_batch(batch):
         responses = batch['OER'].tolist()
         sentiments = analyze_sentiment_batch(responses)
