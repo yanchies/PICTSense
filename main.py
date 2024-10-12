@@ -33,7 +33,9 @@ def main():
     
     else:
         # Message to show if no file is uploaded
-        st.warning("Please upload a CSV file to continue.")
+        st.warning("File already uploaded.")
+        st.write("Please refresh the app if you wish to upload a new file.")
+
 
 
 
