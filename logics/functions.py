@@ -95,7 +95,7 @@ def identify_topic_batch(responses):
     return results
 
 def process_responses(df, json_file_path, batch_size=100):
-    result = []
+    result = {}
     def process_batch(batch):
         responses = batch['OER'].tolist()
         sentiments = analyze_sentiment_batch(responses)
@@ -108,14 +108,17 @@ def process_responses(df, json_file_path, batch_size=100):
             sentiments, topics = future.result()
             batch = df.iloc[i * batch_size:(i + 1) * batch_size]
             for j, row in enumerate(batch.itertuples(index=False)):
-                result.append({
-                    "OER": row.OER,  # Keep the original column
+                result[row.Index] = {  # Use the original index from the DataFrame
+                    "OER": row.OER,
                     "sentiment": sentiments[j] if j < len(sentiments) else "N/A",
                     "topic": topics[j] if j < len(topics) else "N/A"
-                })
+                }
 
-    # Convert result list to DataFrame
-    result_df = pd.DataFrame(result)
+    # Convert the result dictionary to a DataFrame
+    result_df = pd.DataFrame.from_dict(result, orient='index')
+
+    # Reset index to avoid extra column in output
+    result_df.reset_index(drop=True, inplace=True)
 
     # Save the DataFrame to a JSON file
     result_df.to_json(json_file_path, orient='records', force_ascii=False, lines=True)
