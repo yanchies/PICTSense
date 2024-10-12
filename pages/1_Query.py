@@ -36,7 +36,6 @@ else:
         st.subheader("**Answer:**")
         st.write(f"{result['result']}")
         st.subheader(f"**Sources:** ")
-        st.write(result)
 
         if result['source_documents']:
             for source in result['source_documents']:
