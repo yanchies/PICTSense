@@ -3,16 +3,18 @@ import pandas as pd
 from logics.functions import get_df
 from logics.rag import qa_chain, db, create_vector_store
 import json
-from Main import json_file_path
 
 st.title("Query Page")
 
 if 'file' not in st.session_state:
     st.warning("Please upload a .csv file in the Main page.")
 
+
 # Check if the file exists in session state
 else:
     st.subheader("Dataframe")
+    file = st.session_state['file']
+    json_file_path = file.replace('.csv', '.json')
     # Load the JSON content
     st.dataframe(pd.read_json(json_file_path))
 
