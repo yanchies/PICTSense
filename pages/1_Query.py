@@ -15,7 +15,7 @@ else:
 
     st.subheader("Dataframe")
     # Load the JSON content
-    st.dataframe(get_df(file))
+    st.dataframe(pd.read_json(file))
 
     st.subheader("Document Query Interface")
     

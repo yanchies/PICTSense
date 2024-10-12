@@ -16,7 +16,6 @@ def init_split(json_file_path):
         data = json.load(f)
     documents = splitter.create_documents([data])
     return documents
-
 embeddings_model = OpenAIEmbeddings(model='text-embedding-3-small')
 
 def create_vector_store(file, force_create=False):
