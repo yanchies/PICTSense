@@ -3,6 +3,7 @@ import pandas as pd
 from logics.functions import get_df
 from logics.rag import qa_chain, db, create_vector_store
 import json
+from Main import json_file_path
 
 st.title("Query Page")
 
@@ -11,17 +12,15 @@ if 'file' not in st.session_state:
 
 # Check if the file exists in session state
 else:
-    file = st.session_state['file']
-
     st.subheader("Dataframe")
     # Load the JSON content
-    st.dataframe(pd.read_json(file))
+    st.dataframe(pd.read_json(json_file_path))
 
     st.subheader("Document Query Interface")
     
     if 'vector_store' not in st.session_state:
         st.write("Creating vector store...")
-        create_vector_store(file)
+        create_vector_store(json_file_path)
     else:
         st.write("Loading vector store from session state...")
         

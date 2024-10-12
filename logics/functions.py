@@ -71,7 +71,7 @@ def identify_topic_batch(responses):
         'Health & Safety',
         'Training Experience',
         'Comaraderie & Morale',
-        'Inconclusive'
+        'Other'
     ]
     
     category_embeddings = get_embeddings(categories)
@@ -112,7 +112,7 @@ def process_responses(df, json_file_path, batch_size=100):
         for future in concurrent.futures.as_completed(futures):
             sentiments, topics = future.result()
             for j, sentiment in enumerate(sentiments):
-                response_index = batch.index[j]  # Get original index for each response
+                response_index = batch.index[j] - 1  # Get original index for each response
                 results.append({
                     "response": batch.at[response_index, 'OER'],
                     "sentiment": sentiment,
