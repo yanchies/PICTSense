@@ -29,7 +29,9 @@ def main():
             st.subheader("Dataframe")
             df = pd.read_csv(csv_file_path)  # Load your CSV file
             json_file_path = process_responses(df, json_file_path)
-            st.dataframe(get_df(json_file_path))            
+            df = get_df(json_file_path)
+            df = df.pivot(index=['response_id', 'response', 'sentiment', 'topic'])
+            st.dataframe(df)
     else:
         # Message to show if no file is uploaded
         st.warning("File already uploaded.")
