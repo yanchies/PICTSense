@@ -97,27 +97,31 @@ def identify_topic_batch(responses):
 def process_responses(df, json_file_path, batch_size=100):
     results = []  # List to accumulate results
 
-    def process_batch(batch):
+    def process_batch(batch, start_index):
         responses = batch['OER'].tolist()
         sentiments = analyze_sentiment_batch(responses)
         topics = identify_topic_batch(responses)
-        return sentiments, topics
+
+        # Collect results for the current batch with correct indices
+        batch_results = []
+        for j, sentiment in enumerate(sentiments):
+            response_index = start_index + j  # Calculate correct original index
+            batch_results.append({
+                "response": df.loc[response_index, 'OER'],
+                "sentiment": sentiment,
+                "topic": topics[j] if j < len(topics) else "N/A"
+            })
+        return batch_results
 
     with ThreadPoolExecutor() as executor:
         futures = []
         for i in range(0, len(df), batch_size):
             batch = df.iloc[i:i + batch_size]
-            futures.append(executor.submit(process_batch, batch))
+            futures.append(executor.submit(process_batch, batch, i))  # Pass starting index
 
+        # Collect results from all futures
         for future in concurrent.futures.as_completed(futures):
-            sentiments, topics = future.result()
-            for j, sentiment in enumerate(sentiments):
-                response_index = i + j  # Get original index for each response
-                results.append({
-                    "response": df.loc[response_index, 'OER'],
-                    "sentiment": sentiment,
-                    "topic": topics[j] if j < len(topics) else "N/A"
-                })
+            results.extend(future.result())  # Extend with batch results
 
     # Write results to JSON in one go
     with open(json_file_path, 'w', encoding='utf-8') as jsonf:
