@@ -19,8 +19,8 @@ def analyze_sentiment_batch(responses):
         message = {
             "role": "user", 
             "content": f"Adopt a pessimistic point of view in the sentiment analysis.\
-                You must only provide a numerical sentiment score (from a scale of 1 to 10) \
-                for the following survey response using, with 1 being most negative and 10 being most positive: {response}."
+                You must only output a numerical sentiment score (example, 2), from a scale of 1 to 10 \
+                with 1 being most negative and 10 being most positive, for the following survey response: {response}."
         }
         
         # Call the OpenAI API for each response
@@ -108,14 +108,17 @@ def process_responses(df, json_file_path, batch_size=100):
             sentiments, topics = future.result()
             batch = df.iloc[i * batch_size:(i + 1) * batch_size]
             for j, row in enumerate(batch.itertuples(index=False)):
-                result[f"response_{i * batch_size + j + 1}"] = {
-                    "response": row.OER,
+                result.append({
+                    "OER": row.OER,  # Keep the original column
                     "sentiment": sentiments[j] if j < len(sentiments) else "N/A",
                     "topic": topics[j] if j < len(topics) else "N/A"
-                }
+                })
 
-    with open(json_file_path, 'w', encoding='utf-8') as jsonf:
-        json.dump(result, jsonf, ensure_ascii=False, indent=4)
+    # Convert result list to DataFrame
+    result_df = pd.DataFrame(result)
+
+    # Save the DataFrame to a JSON file
+    result_df.to_json(json_file_path, orient='records', force_ascii=False, lines=True)
 
     print(f"JSON file saved to {json_file_path}")
     st.success("Successfully added new inputs!")
