@@ -13,8 +13,7 @@ if 'file' not in st.session_state:
 # Check if the file exists in session state
 else:
     st.subheader("Dataframe")
-    file = st.session_state['file']
-    json_file_path = file.replace('.csv', '.json')
+    json_file_path = st.session_state['json_file_path']
     # Load the JSON content
     st.dataframe(pd.read_json(json_file_path))
 
