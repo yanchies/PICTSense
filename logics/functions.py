@@ -96,32 +96,25 @@ def identify_topic_batch(responses):
 
 def process_responses(df, json_file_path, batch_size=100):
     result = {}
-    def process_batch(batch):
-        responses = batch['OER'].tolist()
+    # Process in batches
+    for i in range(0, len(df), batch_size):
+        batch = df.iloc[i:i + batch_size]
+        responses = batch['OER'].tolist()  
+
         sentiments = analyze_sentiment_batch(responses)
         topics = identify_topic_batch(responses)
-        return sentiments, topics
 
-    with ThreadPoolExecutor() as executor:
-        futures = [executor.submit(process_batch, df.iloc[i:i + batch_size]) for i in range(0, len(df), batch_size)]
-        for i, future in enumerate(concurrent.futures.as_completed(futures)):
-            sentiments, topics = future.result()
-            batch = df.iloc[i * batch_size:(i + 1) * batch_size]
-            for j, row in enumerate(batch.itertuples(index=True)):
-                result[row.index] = {  # Use the original index from the DataFrame
-                    "OER": row.OER,
-                    "sentiment": sentiments[j] if j < len(sentiments) else "N/A",
-                    "topic": topics[j] if j < len(topics) else "N/A"
-                }
+        # Combine results for each response in the batch
+        for j, row in enumerate(batch.itertuples(index=False)):
+            result[f"response_{i + j + 1}"] = {
+                "response": row.OER,
+                "sentiment": sentiments[j] if j < len(sentiments) else "N/A",
+                "topic": topics[j] if j < len(topics) else "N/A"
+            }
 
-    # Convert the result dictionary to a DataFrame
-    result_df = pd.DataFrame.from_dict(result, orient='index')
-
-    # Reset index to avoid extra column in output
-    result_df.reset_index(drop=True, inplace=True)
-
-    # Save the DataFrame to a JSON file
-    result_df.to_json(json_file_path, orient='records', force_ascii=False, lines=True)
+    # Final write to JSON file
+    with open(json_file_path, 'w', encoding='utf-8') as jsonf:
+        json.dump(result, jsonf, ensure_ascii=False, indent=4)
 
     print(f"JSON file saved to {json_file_path}")
     st.success("Successfully added new inputs!")
