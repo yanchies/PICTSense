@@ -111,11 +111,10 @@ def process_responses(df, json_file_path, batch_size=100):
 
         for future in concurrent.futures.as_completed(futures):
             sentiments, topics = future.result()
-            for j, sentiment in enumerate(sentiments):
-                response_index = batch.index[j]  # Get original index for each response
-                result[response_index + 1] = {
-                    "response": batch.at[response_index, 'OER'],
-                    "sentiment": sentiment,
+            for j, row in enumerate(batch.itertuples(index=False)):
+                result[f"response_{i + j + 1}"] = {
+                    "response": row.OER,
+                    "sentiment": sentiments[j] if j < len(sentiments) else "N/A",
                     "topic": topics[j] if j < len(topics) else "N/A"
                 }
 
