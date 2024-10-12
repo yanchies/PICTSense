@@ -51,7 +51,7 @@ else:
                         st.write(f"**Source {len(ids)}:**")
                         response_text = response_data["response"]
                         sentiment = response_data["sentiment"]
-                        topic = response_data.get("topic", "NA")
+                        topic = response_data["topic"]
                         
                         st.write(f"**{id}:** {response_text}")
                         st.write(f"**Sentiment Score:** {sentiment}")
