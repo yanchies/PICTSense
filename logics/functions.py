@@ -114,10 +114,15 @@ def process_responses(df, json_file_path, batch_size=100):
             for j, sentiment in enumerate(sentiments):
                 response_index = batch.index[j]  # Get original index for each response
                 results.append({
+                    "response_id": response_index,  # Original index as response_id
                     "response": batch.at[response_index, 'OER'],
                     "sentiment": sentiment,
                     "topic": topics[j] if j < len(topics) else "N/A"
                 })
+
+    # Convert results to DataFrame and reorder columns
+    results_df = pd.DataFrame(results)
+    results_df = results_df[['response_id', 'response', 'sentiment', 'topic']]
 
     # Write results to JSON in one go
     with open(json_file_path, 'w', encoding='utf-8') as jsonf:
