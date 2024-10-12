@@ -44,7 +44,8 @@ else:
                 for i, doc in enumerate(result["source_documents"]):
                     content = json.loads(doc.page_content)
                     
-                    for id, response_data in content.items():
+                    for id, response_str in content.items():
+                        response_data = json.loads(response_str)
                         if not response_data["response"]:
                             continue
                         if id in ids:
