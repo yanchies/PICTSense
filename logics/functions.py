@@ -4,6 +4,9 @@ import streamlit as st
 from helper_functions import llm
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
+import json
+from concurrent.futures import ThreadPoolExecutor
+import concurrent.futures
 
 # Assuming OpenAI has been initialized and imported
 client = llm.client
@@ -93,27 +96,27 @@ def identify_topic_batch(responses):
 
 def process_responses(df, json_file_path, batch_size=100):
     result = {}
-
-    # Process in batches
-    for i in range(0, len(df), batch_size):
-        batch = df.iloc[i:i + batch_size]
-        responses = batch['OER'].tolist()  
-
+    def process_batch(batch):
+        responses = batch['OER'].tolist()
         sentiments = analyze_sentiment_batch(responses)
         topics = identify_topic_batch(responses)
+        return sentiments, topics
 
-        # Combine results for each response in the batch
-        for j, row in enumerate(batch.itertuples(index=False)):
-            result[f"response_{i + j + 1}"] = {
-                "response": row.OER,
-                "sentiment": sentiments[j] if j < len(sentiments) else "N/A",
-                "topic": topics[j] if j < len(topics) else "N/A"
-            }
+    with ThreadPoolExecutor() as executor:
+        futures = [executor.submit(process_batch, df.iloc[i:i + batch_size]) for i in range(0, len(df), batch_size)]
+        for i, future in enumerate(concurrent.futures.as_completed(futures)):
+            sentiments, topics = future.result()
+            batch = df.iloc[i * batch_size:(i + 1) * batch_size]
+            for j, row in enumerate(batch.itertuples(index=False)):
+                result[f"response_{i * batch_size + j + 1}"] = {
+                    "response": row.OER,
+                    "sentiment": sentiments[j] if j < len(sentiments) else "N/A",
+                    "topic": topics[j] if j < len(topics) else "N/A"
+                }
 
-    # Final write to JSON file
     with open(json_file_path, 'w', encoding='utf-8') as jsonf:
         json.dump(result, jsonf, ensure_ascii=False, indent=4)
-    
+
     print(f"JSON file saved to {json_file_path}")
     st.success("Successfully added new inputs!")
     return json_file_path

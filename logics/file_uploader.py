@@ -30,6 +30,5 @@ def file_uploader(file):
     with open(json_file_path, 'w', encoding='utf-8') as jsonf:
         json.dump(data, jsonf, ensure_ascii=False, indent=4)
 
-    return [csv_file_path, json_file_path]
-    
+    return [csv_file_path, json_file_path]    
     
