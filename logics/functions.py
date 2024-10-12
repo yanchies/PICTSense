@@ -107,8 +107,8 @@ def process_responses(df, json_file_path, batch_size=100):
         for i, future in enumerate(concurrent.futures.as_completed(futures)):
             sentiments, topics = future.result()
             batch = df.iloc[i * batch_size:(i + 1) * batch_size]
-            for j, row in enumerate(batch.itertuples(index=False)):
-                result[row.Index] = {  # Use the original index from the DataFrame
+            for j, row in enumerate(batch.itertuples(index=True)):
+                result[row.index] = {  # Use the original index from the DataFrame
                     "OER": row.OER,
                     "sentiment": sentiments[j] if j < len(sentiments) else "N/A",
                     "topic": topics[j] if j < len(topics) else "N/A"
