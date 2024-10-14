@@ -34,7 +34,7 @@ def main():
 
             # display overview information
             st.subheader("Overview")
-            sentiment_bar = final_df["sentiment"].value_counts().sort_index().plot(kind="bar")
+            sentiment_bar = final_df["sentiment"].value_counts().sort_index()
             st.bar_chart(data=sentiment_bar, horizontal=True)
             topic_bar = final_df["topic"].value_counts().sort_values()
             st.bar_chart(data=topic_bar)
