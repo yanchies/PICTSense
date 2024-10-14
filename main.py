@@ -39,7 +39,7 @@ def main():
             st.bar_chart(data=topic_bar)
 
     else:
-        # Message to show if no file is uploaded
+        final_df = pd.read_json(st.session_state['json_file_path'])
         st.warning("File already uploaded.")
         st.write("Please refresh the app if you wish to upload a new file.")
         st.subheader("Dataframe")
