@@ -68,6 +68,14 @@ def main():
         st.write("Topics:")
         st.bar_chart(data=topic_bar, x_label="Topic", y_label="Count")
 
+        neg_issues = final_df[final_df['sentiment'].between(1, 4)]['topic'].value_counts()
+        st.write("Top Negative Issues:")
+        st.bar_chart(data=neg_issues.head(3), x_label="Topic", y_label="Count")
+
+        pos_issues = final_df[final_df['sentiment'].between(6, 10)]['topic'].value_counts()
+        st.write("Top Positive Issues:")
+        st.bar_chart(data=pos_issues.head(3), x_label="Topic", y_label="Count")
+
 
 
 
