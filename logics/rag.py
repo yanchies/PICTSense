@@ -23,34 +23,35 @@ def init_split(json_file_path):
 embeddings_model = OpenAIEmbeddings(model='text-embedding-3-small')
 
 def create_vector_store(file):
-    persistent_client = chromadb.PersistentClient()
+    chroma_db = Chroma(persist_directory="./chroma_langchain_db",
+        embedding_function=embeddings_model,
+        collection_name="pictsense_store")
+    collection = chroma_db.get()
     
-
-    st.write("Creating vector store...")
     # look for existing collection and delete if it exists
     try:
-        collection = persistent_client.get_or_create_collection("pictsense_store")
-        persistent_client.delete_collection(collection)
-        st.write("Collection deleted.")
+        if len(collection['ids']) > 0:
+            chroma_db.delete_collection()
+            st.write("Collection deleted.")
     except Exception as e:
         st.write(f"An error occurred while trying to delete the collection: {e}")
-        # Optionally re-raise if you want to stop execution here
-        # raise Exception(f"Failed to delete collection: {e}")
     
+    st.write("Creating vector store...")
     documents = init_split(file)
 
     # Create new vector store from documents
-    vector_store = Chroma.from_documents(
-        collection_name="pictsense_store",
-        documents=documents,
-        embedding=embeddings_model,
-        persist_directory="./chroma_langchain_db"  # Local persistence
-    )
-    st.write("Vector store created.")
+    if len(collection['ids']) == 0:
+        chroma_db = Chroma.from_documents(
+            collection_name="pictsense_store",
+            documents=documents,
+            embedding=embeddings_model,
+            persist_directory="./chroma_langchain_db"  # Local persistence
+        )
+        st.write("Vector store created.")
   
     # Store the vector store in session_state
-    st.session_state['vector_store'] = vector_store
-    return vector_store
+    st.session_state['vector_store'] = chroma_db
+    return chroma_db
 
 # load the vector store
 db = Chroma("pictsense_store",
