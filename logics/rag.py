@@ -7,7 +7,7 @@ from langchain_chroma import Chroma
 from langchain.chains import RetrievalQA
 import json
 import streamlit as st
-from uuid import uuid4
+import chromadb
 
 splitter = RecursiveJsonSplitter(max_chunk_size=500)
 
@@ -23,11 +23,14 @@ def init_split(json_file_path):
 embeddings_model = OpenAIEmbeddings(model='text-embedding-3-small')
 
 def create_vector_store(file):
+    persistent_client = chromadb.PersistentClient()
+    # collection = persistent_client.get_or_create_collection("collection_name")
+
     st.write("Creating vector store...")
     # look for existing collection and delete if it exists
     try:
-        uuids = vector_store.get()["ids"]
-        vector_store.delete(ids=uuids)
+        persistent_client.delete_collection("pictsense_store")
+        st.write("Collection deleted.")
     except Exception as e:
         st.write(f"An error occurred while trying to delete the collection: {e}")
         # Optionally re-raise if you want to stop execution here
