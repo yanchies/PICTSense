@@ -139,6 +139,7 @@ def visualise(df):
 
     neg = df[df['sentiment'].between(1, 4)]['topic'].value_counts()
     neg_df = neg.reset_index()
+    st.dataframe(neg_df)
     neg_df.columns = ['topic', 'count']
     neg_issues = neg_df.sort_values(by='count', ascending=False)
 
