@@ -143,7 +143,7 @@ def visualise(df):
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("No. of Responses", df.shape[0])
     col2.metric("Negative Responses (1 to 4)", neg_issues.sum())
-    col3.metric("Neutral Responses (5)", df[df['sentiment'] == 5].sum())
+    col3.metric("Neutral Responses (5)", df[df['sentiment'] == 5].shape[0])
     col4.metric("Positive Responses (6 to 10)", pos_issues.sum())
     
     st.divider()
