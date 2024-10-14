@@ -24,12 +24,13 @@ embeddings_model = OpenAIEmbeddings(model='text-embedding-3-small')
 
 def create_vector_store(file):
     persistent_client = chromadb.PersistentClient()
-    # collection = persistent_client.get_or_create_collection("collection_name")
+    
 
     st.write("Creating vector store...")
     # look for existing collection and delete if it exists
     try:
-        persistent_client.delete_collection("pictsense_store")
+        collection = persistent_client.get_or_create_collection("pictsense_store")
+        persistent_client.delete_collection(collection)
         st.write("Collection deleted.")
     except Exception as e:
         st.write(f"An error occurred while trying to delete the collection: {e}")
@@ -50,6 +51,7 @@ def create_vector_store(file):
     # Store the vector store in session_state
     st.session_state['vector_store'] = vector_store
     return vector_store
+
 # load the vector store
 db = Chroma("pictsense_store",
     embedding_function=embeddings_model,
