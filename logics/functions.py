@@ -164,3 +164,5 @@ def visualise(df):
     st.divider()
     st.write("Top Positive Issues:")
     st.bar_chart(data=pos_issues.head(3), x_label="Count", y_label="Topic", horizontal=True)
+
+    return
