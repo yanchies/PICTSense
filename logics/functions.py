@@ -67,7 +67,7 @@ def identify_topic_batch(responses):
         'Equipment Serviceability',
         'Lodging & Food',
         'Training Effectiveness',
-        'Administration & Time Management',
+        'Administration',
         'Leadership',
         'Health & Safety',
         'Training Experience',
@@ -159,7 +159,13 @@ def visualise(df):
         st.bar_chart(data=sentiment_bar, x_label= "Sentiment Score", y_label="Count")
     with col2:
         st.write("Topics:")
-        st.bar_chart(data=topic_bar, x_label="Count", y_label="Topic", horizontal=True, color="#e2d5bf")
+        topic_df = topic_bar.reset_index()
+        topic_chart = (alt.Chart(topic_df).mark_bar(color='#7c7c7c').encode(
+        x=alt.X("count:Q", title="Count"),
+        y=alt.Y("topic:N", sort=None, title="Topic", axis=alt.Axis(labelLimit=200))
+        ))
+        st.altair_chart(topic_chart, use_container_width=True)
+
 
     st.divider()
     st.write("Top Negative Topics:")
