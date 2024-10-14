@@ -140,13 +140,9 @@ def visualise(df):
     neg = df[df['sentiment'].between(1, 4)]['topic'].value_counts()
     neg_df = neg.reset_index()
     st.dataframe(neg_df)
-    neg_df.columns = ['topic', 'count']
-    neg_issues = neg_df.sort_values(by='count', ascending=False)
 
     pos = df[df['sentiment'].between(6, 10)]['topic'].value_counts()
     pos_df = pos.reset_index()
-    pos_df.columns = ['topic', 'count']
-    pos_issues = pos_df.sort_values(by='count', ascending=False)
 
     # metrics
     col1, col2, col3, col4 = st.columns(4)
@@ -165,9 +161,9 @@ def visualise(df):
         st.bar_chart(data=topic_bar, x_label="Count", y_label="Topic", horizontal=True, color="#e2d5bf")
 
     st.divider()
-    st.write("Top Negative Issues:")
-    st.bar_chart(data=neg_issues, x_label="Count", y_label="Topic", horizontal=True)
-    st.write("Top Positive Issues:")
-    st.bar_chart(data=pos_issues, x_label="Count", y_label="Topic", horizontal=True)
+    st.write("Top Negative Topics:")
+    st.bar_chart(data=neg_df, x_label="Count", y_label="Topic", horizontal=True)
+    st.write("Top Positive Topics:")
+    st.bar_chart(data=pos_df, x_label="Count", y_label="Topic", horizontal=True)
 
     return
