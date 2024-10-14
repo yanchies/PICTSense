@@ -47,10 +47,11 @@ def create_vector_store(file):
             embedding=embeddings_model,
             persist_directory="./chroma_langchain_db"  # Local persistence
         )
+        chroma_db.persist()
         st.write("Vector store created.")
+        st.session_state['vector_store'] = chroma_db
   
     # Store the vector store in session_state
-    st.session_state['vector_store'] = chroma_db
     return chroma_db
 
 # load the vector store
