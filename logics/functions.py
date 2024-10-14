@@ -136,8 +136,16 @@ def process_responses(df, json_file_path, batch_size=100):
 def visualise(df):
     sentiment_bar = df["sentiment"].value_counts().sort_index()
     topic_bar = df["topic"].value_counts()
-    neg_issues = df[df['sentiment'].between(1, 4)]['topic'].value_counts()
-    pos_issues = df[df['sentiment'].between(6, 10)]['topic'].value_counts()
+    
+    neg = df[df['sentiment'].between(1, 4)]['topic'].value_counts()
+    neg_df = neg.reset_index()
+    neg_df.columns = ['topic', 'count']
+    neg_issues = neg_df.sort_values(by='count', ascending=False)
+
+    pos = df[df['sentiment'].between(6, 10)]['topic'].value_counts()
+    pos_df = pos.reset_index()
+    pos_df.columns = ['topic', 'count']
+    pos_issues = pos_df.sort_values(by='count', ascending=False)
 
     # metrics
     col1, col2, col3, col4 = st.columns(4)
