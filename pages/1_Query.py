@@ -23,7 +23,7 @@ else:
     else:
         st.write("Loading vector store from session state...")
         
-    st.write(f"There are {db._collection.count()} documents in the database.")
+    st.write(f"There are {len(db.get()['documents'])} documents in the database.")
     user_query = st.text_input("Enter your query:")
 
     if user_query:
