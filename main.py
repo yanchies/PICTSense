@@ -2,7 +2,7 @@
 import streamlit as st
 import pandas as pd
 from logics.file_uploader import file_uploader
-from logics.functions import process_responses
+from logics.functions import process_responses, visualise
 
 def main():
     # region <--------- Streamlit App Configuration --------->
@@ -33,22 +33,7 @@ def main():
 
             # display overview information
             st.subheader("Overview")
-            
-            sentiment_bar = final_df["sentiment"].value_counts().sort_index()
-            st.write("Sentiment Scores:")
-            st.bar_chart(data=sentiment_bar, x_label= "Count", y_label="Sentiment Score", horizontal=True)
-            
-            topic_bar = final_df["topic"].value_counts()
-            st.write("Topics:")
-            st.bar_chart(data=topic_bar, x_label="Topic", y_label="Count")
-
-            neg_issues = final_df[final_df['sentiment'].between(1, 4)]['topic'].value_counts()
-            st.write("Top Negative Issues:")
-            st.bar_chart(data=neg_issues.head(3), x_label="Topic", y_label="Count")
-
-            pos_issues = final_df[final_df['sentiment'].between(6, 10)]['topic'].value_counts()
-            st.write("Top Positive Issues:")
-            st.bar_chart(data=pos_issues.head(3), x_label="Topic", y_label="Count")
+            visualise(final_df)
 
     else:
         final_df = pd.read_json(st.session_state['json_file_path'])
@@ -56,25 +41,12 @@ def main():
         st.write("Please refresh the app if you wish to upload a new file.")
         st.subheader("Dataframe")
         st.dataframe(final_df)
-
+        
         # display overview information
         st.subheader("Overview")
+        visualise(final_df)
         
-        sentiment_bar = final_df["sentiment"].value_counts().sort_index()
-        st.write("Sentiment Scores:")
-        st.bar_chart(data=sentiment_bar, x_label= "Sentiment Score", y_label="Count", horizontal=True)
         
-        topic_bar = final_df["topic"].value_counts()
-        st.write("Topics:")
-        st.bar_chart(data=topic_bar, x_label="Topic", y_label="Count")
-
-        neg_issues = final_df[final_df['sentiment'].between(1, 4)]['topic'].value_counts().sort_values(ascending=False)
-        st.write("Top Negative Issues:")
-        st.bar_chart(data=neg_issues.head(3), x_label="Topic", y_label="Count")
-
-        pos_issues = final_df[final_df['sentiment'].between(6, 10)]['topic'].value_counts().sort_values(ascending=False)
-        st.write("Top Positive Issues:")
-        st.bar_chart(data=pos_issues.head(3), x_label="Topic", y_label="Count")
 
 
 

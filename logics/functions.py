@@ -133,7 +133,34 @@ def process_responses(df, json_file_path, batch_size=100):
     return json_file_path
 
 
-def get_df(json_file_path):
-    df = pd.read_json(json_file_path)
-    df = df.transpose().reset_index()
-    return df
+def visualise(df):
+    sentiment_bar = df["sentiment"].value_counts().sort_index()
+    topic_bar = df["topic"].value_counts()
+    neg_issues = df[df['sentiment'].between(1, 4)]['topic'].value_counts().sort_values()
+    pos_issues = df[df['sentiment'].between(6, 10)]['topic'].value_counts().sort_values()
+
+    # metrics
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric("No. of Responses", df.shape[0])
+    col2.metric("Negative Responses (1 to 4)", neg_issues.shape[0])
+    col3.metric("Neutral Responses (5)", df[df['sentiment'] == 5].shape[0])
+    col4.metric("Positive Responses (6 to 10)", pos_issues.shape[0])
+    
+    st.divider()
+    col1, col2 = st.columns(2)
+    st.write("Sentiment Scores:")
+    with col1:
+        st.bar_chart(data=sentiment_bar, x_label= "Sentiment Score", y_label="Count")
+    
+    st.divider()
+    st.write("Topics:")
+    with col2:
+        st.bar_chart(data=topic_bar, x_label="Count", y_label="Topic", horizontal=True)
+
+    st.divider()
+    st.write("Top Negative Issues:")
+    st.bar_chart(data=neg_issues.head(3), x_label="Count", y_label="Topic", horizontal=True)
+
+    st.divider()
+    st.write("Top Positive Issues:")
+    st.bar_chart(data=pos_issues.head(3), x_label="Count", y_label="Topic", horizontal=True)
