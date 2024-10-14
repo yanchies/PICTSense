@@ -71,7 +71,7 @@ def identify_topic_batch(responses):
         'Health & Safety',
         'Training Experience',
         'Comaraderie & Morale',
-        'Other'
+        'Inconclusive'
     ]
     
     category_embeddings = get_embeddings(categories)
