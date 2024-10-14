@@ -165,14 +165,14 @@ def visualise(df):
     st.write("Top Negative Topics:")
     neg_chart = (alt.Chart(neg_df).mark_bar(color='#d9061b').encode(
         x=alt.X("count:Q", title="Count"),
-        y=alt.Y("topic:N", sort=None, title="topics", axis=alt.Axis(labelAngle=0))
+        y=alt.Y("topic:N", sort=None, title="topics", axis=alt.Axis(labelLimit=200))
     ))
     st.altair_chart(neg_chart, use_container_width=True)
 
     st.write("Top Positive Topics:")
     pos_chart = (alt.Chart(pos_df).mark_bar(color='#e7e7df').encode(
         x=alt.X("count:Q", title="Count"),
-        y=alt.Y("topic:N", sort=None, title="topics", axis=alt.Axis(labelAngle=0))
+        y=alt.Y("topic:N", sort=None, title="topics", axis=alt.Axis(labelLimit=200))
     ))
     st.altair_chart(pos_chart, use_container_width=True)
 
