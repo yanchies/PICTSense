@@ -16,8 +16,8 @@ def main():
        
     if 'file' not in st.session_state:
         file = st.file_uploader(label="Upload a .csv file", type=['csv'])
-        st.session_state['file'] = json_file_path
         csv_file_path, json_file_path = file_uploader(file)
+        st.session_state['file'] = json_file_path
         st.success("File uploaded successfully!")
         st.divider()
         
