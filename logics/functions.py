@@ -162,8 +162,8 @@ def visualise(df):
 
     st.divider()
     st.write("Top Negative Topics:")
-    st.bar_chart(neg_df, x_label="Count", y_label="Topic", horizontal=True)
+    st.bar_chart(neg, x_label="Count", y_label="Topic", horizontal=True)
     st.write("Top Positive Topics:")
-    st.bar_chart(pos_df, x_label="Count", y_label="Topic", horizontal=True)
+    st.bar_chart(pos, x_label="Count", y_label="Topic", horizontal=True)
 
     return
