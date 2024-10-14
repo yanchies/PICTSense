@@ -167,7 +167,7 @@ def visualise(df):
         x=alt.X("count:Q", title="Count"),
         y=alt.Y("topic:N", sort=None, title="topics")
     ))
-    st.altair_chart(chart)
+    st.altair_chart(chart, use_container_width=True)
 
     st.write("Top Positive Topics:")
     st.bar_chart(pos, x_label="Count", y_label="Topic", horizontal=True)
