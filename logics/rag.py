@@ -53,10 +53,10 @@ def create_vector_store(file):
     # Store the vector store in session_state
     return chroma_db
 
-# load the vector store
-db = Chroma("pictsense_store",
-    embedding_function=embeddings_model,
-    persist_directory= "./chroma_langchain_db")
+# # load the vector store
+# db = Chroma("pictsense_store",
+#     embedding_function=embeddings_model,
+#     persist_directory= "./chroma_langchain_db")
 
 qa_chain = RetrievalQA.from_chain_type(
         ChatOpenAI(model='gpt-4o-mini'),

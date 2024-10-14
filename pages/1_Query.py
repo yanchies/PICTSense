@@ -23,7 +23,8 @@ else:
     else:
         st.write("Loading vector store from session state...")
         
-    st.write(f"There are {len(db.get()['documents'])} documents in the database.")
+    chroma_db= st.session_state['vector_store']
+    st.write(f"There are {len(chroma_db.get()['documents'])} documents in the database.")
     user_query = st.text_input("Enter your query:")
 
     if user_query:
