@@ -1,7 +1,9 @@
 import streamlit as st
 import pandas as pd
-from logics.rag import qa_chain, create_vector_store
+from logics.rag import create_vector_store
 import json
+from langchain_openai import ChatOpenAI
+from langchain.chains import RetrievalQA
 
 st.title("Query Page")
 
@@ -26,6 +28,13 @@ else:
     chroma_db = st.session_state['vector_store']
     st.write(f"There are {len(chroma_db.get()['documents'])} documents in the database.")
     user_query = st.text_input("Enter your query:")
+
+    qa_chain = RetrievalQA.from_chain_type(
+        ChatOpenAI(model='gpt-4o-mini'),
+        retriever=chroma_db.as_retriever(k=5),
+        return_source_documents=True,
+        chain_type="stuff"
+    )
 
     if user_query:
         # Perform query against the documents

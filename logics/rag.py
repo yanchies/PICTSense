@@ -2,9 +2,8 @@ __import__('pysqlite3')
 import sys
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 from langchain.text_splitter import RecursiveJsonSplitter
-from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+from langchain_openai import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
-from langchain.chains import RetrievalQA
 import json
 import streamlit as st
 
@@ -55,9 +54,4 @@ def create_vector_store(file):
 
 
 
-qa_chain = RetrievalQA.from_chain_type(
-        ChatOpenAI(model='gpt-4o-mini'),
-        retriever=chroma_db.as_retriever(k=5),
-        return_source_documents=True,
-        chain_type="stuff"
-    )
+
