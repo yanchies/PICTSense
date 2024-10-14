@@ -26,7 +26,7 @@ def create_vector_store(file):
     st.write("Creating vector store...")
     # look for existing collection and delete if it exists
     try:
-        uuids = [str(uuid4()) for _ in range(len(documents))]
+        uuids = vector_store.get()["ids"]
         vector_store.delete(ids=uuids)
     except Exception as e:
         st.write(f"An error occurred while trying to delete the collection: {e}")
