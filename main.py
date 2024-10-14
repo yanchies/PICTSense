@@ -13,10 +13,7 @@ def main():
     # endregion <--------- Streamlit App Configuration --------->
 
     st.title("PICTSense - Analytical Tool for Open-Ended Responses")
-    # file uploader widget
-    
-    # file = st.file_uploader(label="Upload a .csv file", type=['csv'])
-    
+       
     if 'file' not in st.session_state:
         file = st.file_uploader(label="Upload a .csv file", type=['csv'])
         
@@ -27,15 +24,27 @@ def main():
             st.divider()
             
             st.subheader("Dataframe")
-            df = pd.read_csv(csv_file_path)  # Load your CSV file
-            json_file_path = process_responses(df, json_file_path)
+            raw_df = pd.read_csv(csv_file_path)  # Load your CSV file
+            json_file_path = process_responses(raw_df, json_file_path)
             st.session_state['json_file_path'] = json_file_path
-            # df = get_df(json_file_path)
-            st.dataframe(pd.read_json(json_file_path))
+            final_df = pd.read_json(json_file_path)
+            
+            # display dataframe
+            st.dataframe(final_df)
+
+            # display overview information
+            st.subheader("Overview")
+            sentiment_bar = final_df["sentiment"].value_counts().sort_index().plot(kind="bar")
+            st.bar_chart(data=sentiment_bar, horizontal=True)
+            topic_bar = final_df["topic"].value_counts().sort_values()
+            st.bar_chart(data=topic_bar)
+
     else:
         # Message to show if no file is uploaded
         st.warning("File already uploaded.")
         st.write("Please refresh the app if you wish to upload a new file.")
+        st.subheader("Dataframe")
+        st.dataframe(pd.read_json(json_file_path))
 
 
 

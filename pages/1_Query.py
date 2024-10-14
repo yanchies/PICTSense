@@ -29,7 +29,6 @@ else:
 
     if user_query:
         # Perform query against the documents
-        # try:
         result = qa_chain.invoke(user_query)
         st.write(f"**Query:** {user_query}")
         st.subheader("**Answer:**")
