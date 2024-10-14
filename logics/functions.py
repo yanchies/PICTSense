@@ -7,6 +7,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import json
 from concurrent.futures import ThreadPoolExecutor
 import concurrent.futures
+import altair as alt
 
 # Assuming OpenAI has been initialized and imported
 client = llm.client
@@ -162,7 +163,11 @@ def visualise(df):
 
     st.divider()
     st.write("Top Negative Topics:")
-    st.bar_chart(neg, x_label="Count", y_label="Topic", horizontal=True)
+    st.write(alt.Chart(neg).mark_bar().encode(
+        x=alt.X("count"),
+        y="topics"
+    ))
+
     st.write("Top Positive Topics:")
     st.bar_chart(pos, x_label="Count", y_label="Topic", horizontal=True)
 
