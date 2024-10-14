@@ -171,7 +171,7 @@ def visualise(df):
 
     st.write("Top Positive Topics:")
     pos_chart = (alt.Chart(pos_df).mark_bar(color='#e7e7df').encode(
-        x=alt.X("count:Q", title="Count", scale=alt.Scale(type='linear')),
+        x=alt.X("count:Q", title="Count", axis=alt.Axis(format='d')),
         y=alt.Y("topic:N", sort=None, title="Topic", axis=alt.Axis(labelLimit=200))
     ))
     st.altair_chart(pos_chart, use_container_width=True)
