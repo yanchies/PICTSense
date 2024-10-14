@@ -7,6 +7,7 @@ from langchain_chroma import Chroma
 from langchain.chains import RetrievalQA
 import json
 import streamlit as st
+from chromadb import PersistentClient
 
 splitter = RecursiveJsonSplitter(max_chunk_size=500)
 
@@ -21,11 +22,15 @@ def init_split(json_file_path):
 
 embeddings_model = OpenAIEmbeddings(model='text-embedding-3-small')
 
-def create_vector_store(file, force_create=False):
+def create_vector_store(file):
+    # look for existing collection and delete if it exists
     try:
-        vector_store.reset()
-    except:
-        st.write("No existing Vector Store found. Creating a new one...")
+        collection = "pictsense_store"
+        chroma_client = PersistentClient(path=".chroma")
+        chroma_client.delete_collection(collection)
+        print(f"Collection {collection} deleted successfully.")
+    except Exception as e:
+        raise Exception(f"No existing collection: {e}")
     
     documents = init_split(file)
 
