@@ -24,13 +24,20 @@ embeddings_model = OpenAIEmbeddings(model='text-embedding-3-small')
 
 def create_vector_store(file):
     # look for existing collection and delete if it exists
+    collection_name = "pictsense_store"
+    chroma_client = PersistentClient(path="./chroma_langchain_db")
+    
     try:
-        collection = "pictsense_store"
-        chroma_client = PersistentClient(path=".chroma")
-        chroma_client.delete_collection(collection)
-        print(f"Collection {collection} deleted successfully.")
+        # Check if the collection exists
+        if collection_name in chroma_client.list_collections():
+            chroma_client.delete_collection(collection_name)
+            print(f"Collection '{collection_name}' deleted successfully.")
+        else:
+            print(f"No existing collection named '{collection_name}' found. No deletion needed.")
     except Exception as e:
-        raise Exception(f"No existing collection: {e}")
+        print(f"An error occurred while trying to delete the collection: {e}")
+        # Optionally re-raise if you want to stop execution here
+        # raise Exception(f"Failed to delete collection: {e}")
     
     documents = init_split(file)
 

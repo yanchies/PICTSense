@@ -38,11 +38,11 @@ def main():
     else:
         final_df = pd.read_json(st.session_state['json_file_path'])
         st.warning("File already uploaded.")
-        st.write("Please refresh the app if you wish to upload a new file.")
+        st.warning("Please refresh the app if you wish to upload a new file.")
         st.subheader("Dataframe")
         st.dataframe(final_df)
         st.divider()
-        
+
         # display overview information
         st.subheader("Overview")
         visualise(final_df)
