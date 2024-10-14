@@ -41,6 +41,7 @@ def main():
         st.write("Please refresh the app if you wish to upload a new file.")
         st.subheader("Dataframe")
         st.dataframe(final_df)
+        st.divider()
         
         # display overview information
         st.subheader("Overview")
