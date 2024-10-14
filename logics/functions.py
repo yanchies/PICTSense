@@ -163,10 +163,11 @@ def visualise(df):
 
     st.divider()
     st.write("Top Negative Topics:")
-    st.write(alt.Chart(neg_df).mark_bar().encode(
-        x=alt.X("count", sort=None),
-        y="topics"
+    chart = (alt.Chart(neg_df).mark_bar().encode(
+        x=alt.X("count:Q", title="Count"),
+        y=alt.Y("topic:N", sort=None, title="topics")
     ))
+    st.write(chart)
 
     st.write("Top Positive Topics:")
     st.bar_chart(pos, x_label="Count", y_label="Topic", horizontal=True)
