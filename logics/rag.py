@@ -22,6 +22,11 @@ def init_split(json_file_path):
 embeddings_model = OpenAIEmbeddings(model='text-embedding-3-small')
 
 def create_vector_store(file, force_create=False):
+    try:
+        vector_store.reset()
+    except:
+        st.write("No existing Vector Store found. Creating a new one...")
+    
     documents = init_split(file)
 
     # Create new vector store from documents

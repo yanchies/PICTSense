@@ -140,7 +140,6 @@ def visualise(df):
 
     neg = df[df['sentiment'].between(1, 4)]['topic'].value_counts()
     neg_df = neg.reset_index()
-    st.dataframe(neg)
 
     pos = df[df['sentiment'].between(6, 10)]['topic'].value_counts()
     pos_df = pos.reset_index()
