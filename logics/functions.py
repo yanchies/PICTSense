@@ -136,7 +136,7 @@ def process_responses(df, json_file_path, batch_size=100):
 def visualise(df):
     sentiment_bar = df["sentiment"].value_counts().sort_index()
     topic_bar = df["topic"].value_counts()
-    
+
     neg = df[df['sentiment'].between(1, 4)]['topic'].value_counts()
     neg_df = neg.reset_index()
     neg_df.columns = ['topic', 'count']
@@ -150,9 +150,9 @@ def visualise(df):
     # metrics
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("No. of Responses", df.shape[0])
-    col2.metric("Negative Responses (1 to 4)", neg_issues.sum())
+    col2.metric("Negative Responses (1 to 4)", neg.sum())
     col3.metric("Neutral Responses (5)", df[df['sentiment'] == 5].shape[0])
-    col4.metric("Positive Responses (6 to 10)", pos_issues.sum())
+    col4.metric("Positive Responses (6 to 10)", pos.sum())
     
     st.divider()
     col1, col2 = st.columns(2)
