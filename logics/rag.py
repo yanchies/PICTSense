@@ -23,19 +23,22 @@ def init_split(json_file_path):
 embeddings_model = OpenAIEmbeddings(model='text-embedding-3-small')
 
 def create_vector_store(file):
+    st.write("Creating vector store...")
     # look for existing collection and delete if it exists
     collection_name = "pictsense_store"
     chroma_client = PersistentClient(path="./chroma_langchain_db")
     
     try:
         # Check if the collection exists
-        if collection_name in chroma_client.list_collections():
+        if chroma_client.path.joinpath(collection_name).exists():
             chroma_client.delete_collection(collection_name)
-            print(f"Collection '{collection_name}' deleted successfully.")
+            st.write(f"Collection '{collection_name}' deleted successfully.")
         else:
-            print(f"No existing collection named '{collection_name}' found. No deletion needed.")
+            st.write(f"No existing collection named '{collection_name}' found. No deletion needed.")
+    except FileNotFoundError:
+        st.write(f"No collection found at {chroma_client.path}. No deletion needed.")
     except Exception as e:
-        print(f"An error occurred while trying to delete the collection: {e}")
+        st.write(f"An error occurred while trying to delete the collection: {e}")
         # Optionally re-raise if you want to stop execution here
         # raise Exception(f"Failed to delete collection: {e}")
     
@@ -53,7 +56,6 @@ def create_vector_store(file):
     # Store the vector store in session_state
     st.session_state['vector_store'] = vector_store
     return vector_store
-
 # load the vector store
 db = Chroma("pictsense_store",
     embedding_function=embeddings_model,

@@ -19,7 +19,6 @@ else:
     st.subheader("Document Query Interface")
     
     if 'vector_store' not in st.session_state:
-        st.write("Creating vector store...")
         create_vector_store(json_file_path)
     else:
         st.write("Loading vector store from session state...")
