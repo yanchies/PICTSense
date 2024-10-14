@@ -3,11 +3,10 @@ import sys
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 from langchain.text_splitter import RecursiveJsonSplitter
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
-from langchain_chroma import Chroma
+from langchain.vectorstores import Chroma
 from langchain.chains import RetrievalQA
 import json
 import streamlit as st
-import chromadb
 
 splitter = RecursiveJsonSplitter(max_chunk_size=500)
 
