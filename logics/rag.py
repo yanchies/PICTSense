@@ -53,7 +53,7 @@ def create_vector_store(file):
     # Store the vector store in session_state
     return chroma_db
 
-chroma_db = st.session_state['vector_store']
+
 
 qa_chain = RetrievalQA.from_chain_type(
         ChatOpenAI(model='gpt-4o-mini'),

@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from logics.rag import qa_chain, chroma_db, create_vector_store
+from logics.rag import qa_chain, create_vector_store
 import json
 
 st.title("Query Page")
@@ -22,7 +22,8 @@ else:
         create_vector_store(json_file_path)
     else:
         st.write("Loading vector store from session state...")
-        
+    
+    chroma_db = st.session_state['vector_store']
     st.write(f"There are {len(chroma_db.get()['documents'])} documents in the database.")
     user_query = st.text_input("Enter your query:")
 
