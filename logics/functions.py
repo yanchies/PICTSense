@@ -165,8 +165,8 @@ def visualise(df):
 
     st.divider()
     st.write("Top Negative Issues:")
-    st.bar_chart(data=neg_issues.sort_values(), x_label="Count", y_label="Topic", horizontal=True, color="#e85a5b")
+    st.bar_chart(data=neg_issues, x_label="Count", y_label="Topic", horizontal=True, color="#e85a5b")
     st.write("Top Positive Issues:")
-    st.bar_chart(data=pos_issues.sort_values(), x_label="Count", y_label="Topic", horizontal=True, color="#dbead2")
+    st.bar_chart(data=pos_issues, x_label="Count", y_label="Topic", horizontal=True, color="#dbead2")
 
     return
