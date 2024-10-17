@@ -182,5 +182,3 @@ def visualise(df):
         y=alt.Y("topic:N", sort=None, title="Topic", axis=alt.Axis(labelLimit=200))
     ))
     st.altair_chart(pos_chart, use_container_width=True)
-
-    return
