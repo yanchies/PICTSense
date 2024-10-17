@@ -19,9 +19,11 @@ def analyze_sentiment_batch(responses):
         # Prepare a single message for each response
         message = {
             "role": "user", 
-            "content": f"Adopt a pessimistic point of view in the sentiment analysis.\
-                You must only output a numerical sentiment score (example, 2), from a scale of 1 to 10 \
-                with 1 being most negative and 10 being most positive, for the following survey response: {response}."
+            "content": f"You must only output a numerical sentiment score (example, 2), from a scale of 1 to 10 \
+                with 1 being most negative and 10 being most positive, for the following survey response: {response}.
+                A score of 1 would refer to responses that exhibit extreme dissatisfaction and negativity \
+                    from language, content, and tone (punctuation as well). 10 would refer to extreme positivity \
+                        and satisfaction."
         }
         
         # Call the OpenAI API for each response

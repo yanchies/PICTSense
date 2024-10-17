@@ -38,16 +38,16 @@ def create_vector_store(file):
     documents = init_split(file)
 
     # Create new vector store from documents
-    if len(collection['ids']) == 0:
-        chroma_db = Chroma.from_documents(
-            collection_name="pictsense_store",
-            documents=documents,
-            embedding=embeddings_model,
-            persist_directory="./chroma_langchain_db"  # Local persistence
-        )
-        chroma_db.persist()
-        st.write("Vector store created.")
-        st.session_state['vector_store'] = chroma_db
+    
+    chroma_db = Chroma.from_documents(
+        collection_name="pictsense_store",
+        documents=documents,
+        embedding=embeddings_model,
+        persist_directory="./chroma_langchain_db"  # Local persistence
+    )
+    chroma_db.persist()
+    st.write("Vector store created.")
+    st.session_state['vector_store'] = chroma_db
   
     # Store the vector store in session_state
     return chroma_db
