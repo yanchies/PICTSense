@@ -9,7 +9,6 @@ from concurrent.futures import ThreadPoolExecutor
 import concurrent.futures
 import altair as alt
 
-# Assuming OpenAI has been initialized and imported
 client = llm.client
 
 def analyze_sentiment_batch(responses):
@@ -60,7 +59,7 @@ def get_embeddings(responses):
             
     return embeddings
 
-# use embeddings approach to enhance accuracy
+# use embeddings approach to enhance accuracy for topic identification
 def identify_topic_batch(responses):
     results = []
     
@@ -97,7 +96,7 @@ def identify_topic_batch(responses):
     return results
 
 def process_responses(df, json_file_path, batch_size=100):
-    results = []  # List to accumulate results
+    results = []  
 
     def process_batch(batch, start_index):
         responses = batch['OER'].tolist()
@@ -107,7 +106,7 @@ def process_responses(df, json_file_path, batch_size=100):
         # Collect results for the current batch with correct indices
         batch_results = []
         for j, sentiment in enumerate(sentiments):
-            response_index = start_index + j  # Calculate correct original index
+            response_index = start_index + j  
             batch_results.append({
                 "response_id": str(response_index + 1),
                 "response": df.loc[response_index, 'OER'],
@@ -120,7 +119,7 @@ def process_responses(df, json_file_path, batch_size=100):
         futures = []
         for i in range(0, len(df), batch_size):
             batch = df.iloc[i:i + batch_size]
-            futures.append(executor.submit(process_batch, batch, i))  # Pass starting index
+            futures.append(executor.submit(process_batch, batch, i))  
 
         # Collect results from all futures
         for future in concurrent.futures.as_completed(futures):
@@ -153,6 +152,7 @@ def visualise(df):
     col4.metric("Positive Responses (6 to 10)", pos.sum())
     
     st.divider()
+    # visualise sentiment scores and topics
     col1, col2 = st.columns(2)
     with col1:
         st.write("Sentiment Scores:")
@@ -168,6 +168,7 @@ def visualise(df):
 
 
     st.divider()
+    # show the top negative topics
     st.write("Top Negative Topics:")
     neg_chart = (alt.Chart(neg_df).mark_bar(color='#d9061b').encode(
         x=alt.X("count:Q", title="Count"),
@@ -176,6 +177,7 @@ def visualise(df):
     st.altair_chart(neg_chart, use_container_width=True)
 
     st.write("Top Positive Topics:")
+    # show the top positive topics
     pos_chart = (alt.Chart(pos_df).mark_bar(color='#e7e7df').encode(
         x=alt.X("count:Q", title="Count", axis=alt.Axis(format='d')),
         y=alt.Y("topic:N", sort=None, title="Topic", axis=alt.Axis(labelLimit=200))

@@ -48,7 +48,6 @@ def create_vector_store(file):
     st.write("Vector store created.")
     st.session_state['vector_store'] = chroma_db
   
-    # Store the vector store in session_state
     return chroma_db
 
 

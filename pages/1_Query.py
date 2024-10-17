@@ -10,16 +10,12 @@ st.title("Query Page")
 if 'file' not in st.session_state:
     st.warning("Please upload a .csv file in the Main page.")
 
-
-# Check if the file exists in session state
 else:
     st.subheader("Dataframe")
     json_file_path = st.session_state['json_file_path']
-    # Load the JSON content
     st.dataframe(pd.read_json(json_file_path))
 
     st.subheader("Document Query Interface")
-    
     if 'vector_store' not in st.session_state:
         create_vector_store(json_file_path)
     else:
@@ -27,17 +23,18 @@ else:
     
     chroma_db = st.session_state['vector_store']
     st.write(f"There are {len(chroma_db.get()['documents'])} documents in the database.")
-    user_query = st.text_input("Enter your query:")
-
+    
+    # use RetrievalQA to enable Document Query
     qa_chain = RetrievalQA.from_chain_type(
         ChatOpenAI(model='gpt-4o-mini'),
-        retriever=chroma_db.as_retriever(k=8),
+        retriever=chroma_db.as_retriever(k=10),
         return_source_documents=True,
         chain_type="stuff"
     )
 
+    user_query = st.text_input("Enter your query:")
+
     if user_query:
-        # Perform query against the documents
         result = qa_chain.invoke(user_query)
         st.write(f"**Query:** {user_query}")
         st.subheader("**Answer:**")
