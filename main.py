@@ -1,7 +1,7 @@
 # Set up and run this Streamlit App
 import streamlit as st
 import pandas as pd
-from logics.file_uploader import file_uploader
+from helper_functions.utility import file_uploader, check_password
 from logics.functions import process_responses, visualise
 
 def main():
@@ -20,6 +20,9 @@ def main():
     Furthermore, please be aware that the LLM may generate inaccurate or incorrect information. You assume full responsibility for how you use any generated output.
     Always consult with qualified professionals for accurate and personalized advice.
     """)
+        
+    if not check_password():
+        st.stop()
        
     if 'file' not in st.session_state:      
         file = st.file_uploader(label="Upload a .csv file", type=['csv'])

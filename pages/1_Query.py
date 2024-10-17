@@ -15,7 +15,7 @@ else:
     json_file_path = st.session_state['json_file_path']
     st.dataframe(pd.read_json(json_file_path))
 
-    st.subheader("Document Query Interface")
+    st.subheader("Response Query Interface")
     if 'vector_store' not in st.session_state:
         create_vector_store(json_file_path)
     else:

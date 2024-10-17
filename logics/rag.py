@@ -7,6 +7,10 @@ from langchain.vectorstores import Chroma
 import json
 import streamlit as st
 
+# """  
+# This file contains the RAG-based functions.   
+# """ 
+
 splitter = RecursiveJsonSplitter(max_chunk_size=500)
 
 def init_split(json_file_path):
