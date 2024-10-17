@@ -38,7 +38,6 @@ def create_vector_store(file):
     documents = init_split(file)
 
     # Create new vector store from documents
-    
     chroma_db = Chroma.from_documents(
         collection_name="pictsense_store",
         documents=documents,
