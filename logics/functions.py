@@ -36,7 +36,7 @@ def analyze_sentiment_batch(responses):
             results.append(sentiment)
         except Exception as e:
             print(f"Error analyzing sentiment for response: {response}. Error: {e}")
-            results.append("Error")
+            results.append(0)
     
     return results
 
