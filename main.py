@@ -21,8 +21,6 @@ def main():
     Always consult with qualified professionals for accurate and personalized advice.
     """)
     
-    st.write("hello")
-        
     if not check_password():
         st.stop()
        
