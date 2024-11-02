@@ -207,7 +207,7 @@ def gen_df():
             
             response_text = response.choices[0].message['content']
             response_id = f"response_{i+1}"
-            responses[response_id] = response_text})
+            responses[response_id] = response_text
         
         except Exception as e:
             print(f"Error generating response {i+1}: {e}")
