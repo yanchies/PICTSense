@@ -212,8 +212,8 @@ def summarize(response_summary):
         stop=["\n", "<|cursor|>"]
     )
     
-    summary = response.choices[0].message['content']
-    return summary.strip()
+    summary = response.choices[0].message.content.strip()
+    return summary
     
     # except Exception as e:
     #     print(f"Error in summarizing: {e}")
