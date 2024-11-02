@@ -202,7 +202,7 @@ def visualise(df):
 def summarize(response_summary):
     try:
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-40-mini",
             messages=[
                 {"role": "system", "content": "You are an assistant summarizing feedback on military training."},
                 {"role": "user", "content": f"Summarize the following responses: {response_summary[:500]}"}
