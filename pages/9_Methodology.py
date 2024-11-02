@@ -8,5 +8,5 @@ st.write("""In summary, the application utilises various LLM-based techniques su
          Retrieval-Augment Generation (RAG), RetrievalQA, and summarisation to enable its features.""")
 
 st.subheader("Process Flow")
-st.image("/helper_functions/pictsense.drawio.png")
+st.image("./helper_functions/pictsense.drawio.png")
 
