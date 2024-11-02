@@ -221,6 +221,16 @@ def summarize(response_summary):
     #     return "Summary not available"
 def gen_df():
     responses = []
+    categories = [
+        'Equipment Serviceability',
+        'Lodging & Food',
+        'Training Effectiveness',
+        'Administration',
+        'Leadership',
+        'Health & Safety',
+        'Training Experience',
+        'Comaraderie & Morale',
+    ]
     
     for i in range(50):
         try:
@@ -228,12 +238,11 @@ def gen_df():
                 model="gpt-4o-mini",
                 messages=[
                     {"role": "system", "content": "You are an expert on military training providing insights and suggestions."},
-                    {"role": "user", "content": "Generate an open-ended feedback on military training based on one of the following\
-                      categories: Equipment Serviceability, Lodging & Food, Training Effectiveness, Administration, Leadership,\
-                         Health & Safety, Training Experience, Comaraderie & Morale"}
+                    {"role": "user", "content": f"Generate a survey feedback on a 2-week military training experience, \
+                     based the following type of issue: {categories[i%8]}."}
                 ],
-                max_tokens=100,
-                temperature=0.7  # Adjust creativity as needed
+                max_tokens=50,
+                temperature=1  # Adjust creativity as needed
             )
             
             response_text = response.choices[0].message.content.strip()
