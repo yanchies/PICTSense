@@ -240,7 +240,7 @@ def gen_df():
             response_id = f"response_{i+1}"
             responses.append({
                 "response_id": response_id,
-                "response": response_text
+                "OER": response_text
             })
         
         except Exception as e:
