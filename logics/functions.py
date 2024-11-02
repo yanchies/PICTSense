@@ -193,7 +193,7 @@ def gen_df():
     
     for i in range(50):
         try:
-            response = client.chat.completion.create(
+            response = client.chat.completions.create(
                 model="gpt-4o-mini",
                 messages=[
                     {"role": "system", "content": "You are an expert on military training providing insights and suggestions."},
