@@ -220,7 +220,7 @@ def summarize(response_summary):
     #     print(f"Error in summarizing: {e}")
     #     return "Summary not available"
 def gen_df():
-    responses = {}
+    responses = []
     
     for i in range(50):
         try:
@@ -238,11 +238,15 @@ def gen_df():
             
             response_text = response.choices[0].message.content.strip()
             response_id = f"response_{i+1}"
-            responses[response_id] = response_text
+            responses.append({
+                "response_id": response_id,
+                "response": response_text
+            })
         
         except Exception as e:
             print(f"Error generating response {i+1}: {e}")
     
     # Convert responses to a DataFrame
-    response_df = pd.DataFrame.from_dict(responses)
+    response_df = pd.DataFrame(responses)
     return response_df
+
