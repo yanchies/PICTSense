@@ -216,9 +216,6 @@ def summarize(response_summary):
     summary = response.choices[0].message.content.strip()
     return summary
     
-    # except Exception as e:
-    #     print(f"Error in summarizing: {e}")
-    #     return "Summary not available"
 def gen_df():
     responses = []
     categories = [
@@ -237,9 +234,10 @@ def gen_df():
             response = client.chat.completions.create(
                 model="gpt-4o-mini",
                 messages=[
-                    {"role": "system", "content": "You are an expert on military training providing insights and suggestions."},
-                    {"role": "user", "content": f"Generate a survey feedback on a 2-week military training experience, \
-                     based the following type of issue: {categories[i%8]}."}
+                    {"role": "system", "content": "You are a reservist soldier who has just gone through a 2-week in-camp \
+                     military training."},
+                    {"role": "user", "content": f"Generate a survey feedback on the in-camp training, \
+                     based the following type of issue: {categories[i%8]}. Do not generate headers."}
                 ],
                 max_tokens=50,
                 temperature=1  # Adjust creativity as needed
