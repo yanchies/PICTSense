@@ -191,7 +191,7 @@ def visualise(df):
     st.divider()
     # pivot table
     pivot_df = df.groupby("topic").agg(
-    avg_sentiment=("sentiment", "mean"),
+    avg_sentiment=("sentiment", "mean").round(2),
     count=("sentiment", "count"),
     response_summary=("response", lambda x: " | ".join(x))).reset_index()
     pivot_df['response_summary'] = pivot_df['response_summary'].apply(summarize)
@@ -205,11 +205,10 @@ def summarize(response_summary):
         model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": "You are an assistant summarizing feedback on military training."},
-            {"role": "user", "content": f"Summarize the following responses: {response_summary[:500]}"}
+            {"role": "user", "content": f"Summarize the following responses that are delimited by <|>: {response_summary[:500]}"}
         ],
-        max_tokens=50,
+        max_tokens=100,
         temperature=0.5,  # Lower temperature for concise summaries
-        stop=["\n", "<|cursor|>"]
     )
     
     summary = response.choices[0].message.content.strip()
