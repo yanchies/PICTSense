@@ -11,7 +11,7 @@ import streamlit as st
 # This file contains the RAG-based functions.   
 # """ 
 
-splitter = RecursiveJsonSplitter(max_chunk_size=500)
+splitter = RecursiveJsonSplitter(max_chunk_size=1000)
 
 def init_split(json_file_path):
     """Initialize document splitting from JSON file."""
