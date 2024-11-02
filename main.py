@@ -46,7 +46,9 @@ def main():
             visualise(final_df)
         
         else:
-            st.button("Generate a random sample of responses", on_click=st.dataframe(gen_df()))
+            if st.button("Generate a random sample of responses"):
+                generated_df = gen_df()
+                st.dataframe(generated_df)
 
     else:
         final_df = pd.read_json(st.session_state['json_file_path'])
