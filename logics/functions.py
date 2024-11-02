@@ -200,20 +200,20 @@ def visualise(df):
 
 # Function to generate summary using OpenAI LLM
 def summarize(response_summary):
-    try:
-        response = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {"role": "system", "content": "You are an assistant summarizing feedback on military training."},
-                {"role": "user", "content": f"Summarize the following responses: {response_summary[:500]}"}
-            ],
-            max_tokens=50,
-            temperature=0.5,  # Lower temperature for concise summaries
-            stop=["\n", "<|cursor|>"]
-        )
-        
-        summary = response.choices[0].message['content']
-        return summary.strip()
+    
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": "You are an assistant summarizing feedback on military training."},
+            {"role": "user", "content": f"Summarize the following responses: {response_summary[:500]}"}
+        ],
+        max_tokens=50,
+        temperature=0.5,  # Lower temperature for concise summaries
+        stop=["\n", "<|cursor|>"]
+    )
+    
+    summary = response.choices[0].message['content']
+    return summary.strip()
     
     # except Exception as e:
     #     print(f"Error in summarizing: {e}")
