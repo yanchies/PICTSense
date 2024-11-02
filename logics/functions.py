@@ -187,3 +187,31 @@ def visualise(df):
         y=alt.Y("topic:N", sort=None, title="Topic", axis=alt.Axis(labelLimit=200))
     ))
     st.altair_chart(pos_chart, use_container_width=True)
+
+def gen_df():
+    responses = []
+    
+    for i in range(50):
+        try:
+            response = client.chat.completion.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": "You are an expert on military training providing insights and suggestions."},
+                    {"role": "user", "content": "Generate an open-ended feedback on military training based on one of the following\
+                      categories: Equipment Serviceability, Lodging & Food, Training Effectiveness, Administration, Leadership,\
+                         Health & Safety, Training Experience, Comaraderie & Morale"}
+                ],
+                max_tokens=100,
+                temperature=0.7  # Adjust creativity as needed
+            )
+            
+            response_text = response.choices[0].message['content']
+            response_id = f"response_{i+1}"
+            responses.append({"response_id": response_id, "response": response_text})
+        
+        except Exception as e:
+            print(f"Error generating response {i+1}: {e}")
+    
+    # Convert responses to a DataFrame
+    response_df = pd.DataFrame(responses)
+    return response_df

@@ -2,7 +2,7 @@
 import streamlit as st
 import pandas as pd
 from helper_functions.utility import file_uploader, check_password
-from logics.functions import process_responses, visualise
+from logics.functions import process_responses, visualise, gen_df
 
 def main():
     # region <--------- Streamlit App Configuration --------->
@@ -44,6 +44,9 @@ def main():
             # display overview information
             st.subheader("Overview")
             visualise(final_df)
+        
+        else:
+            st.button("Generate a random sample of responses", on_click=st.dataframe(gen_df()))
 
     else:
         final_df = pd.read_json(st.session_state['json_file_path'])
