@@ -195,7 +195,7 @@ def visualise(df):
     count=("sentiment", "count"),
     response_summary=("response", lambda x: " | ".join(x))).reset_index()
     pivot_df['response_summary'] = pivot_df['response_summary'].apply(summarize)
-    st.dataframe(pivot_df)
+    st.dataframe(pivot_df.sort_values(by="avg_sentiment", ascending=True))
 
 
 # Function to generate summary using OpenAI LLM
@@ -205,10 +205,11 @@ def summarize(response_summary):
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": "You are an assistant summarizing feedback on military training."},
-                {"role": "user", "content": f"Summarize the following responses: {response_summary}"}
+                {"role": "user", "content": f"Summarize the following responses: {response_summary[:500]}"}
             ],
             max_tokens=50,
-            temperature=0.5  # Lower temperature for concise summaries
+            temperature=0.5,  # Lower temperature for concise summaries
+            stop=["\n", "<|cursor|>"]
         )
         
         summary = response.choices[0].message['content']
