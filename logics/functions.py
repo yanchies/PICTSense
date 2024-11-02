@@ -207,7 +207,7 @@ def summarize(response_summary):
             {"role": "system", "content": "You are an assistant summarizing feedback in a concise and informative manner."},
             {"role": "user", "content": f"Summarize the following responses that are delimited by <|>: {response_summary[:500]}"}
         ],
-        max_tokens=100,
+        max_tokens=50,
         temperature=0.5,  # Lower temperature for concise summaries
     )
     
