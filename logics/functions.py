@@ -188,6 +188,35 @@ def visualise(df):
     ))
     st.altair_chart(pos_chart, use_container_width=True)
 
+    st.divider()
+    # pivot table
+    pivot_df = df.groupby("topic").agg(
+    avg_sentiment=("sentiment", "mean"),
+    count=("sentiment", "count"),
+    response_summary=("response", lambda x: " | ".join(x))).reset_index()
+    pivot_df['response_summary'] = pivot_df['response_summary'].apply(summarize)
+    st.dataframe(pivot_df)
+
+
+# Function to generate summary using OpenAI LLM
+def summarize(response_summary):
+    try:
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You are an assistant summarizing feedback on military training."},
+                {"role": "user", "content": f"Summarize the following responses: {response_summary}"}
+            ],
+            max_tokens=50,
+            temperature=0.5  # Lower temperature for concise summaries
+        )
+        
+        summary = response.choices[0].message['content']
+        return summary.strip()
+    
+    except Exception as e:
+        print(f"Error in summarizing: {e}")
+        return "Summary not available"
 def gen_df():
     responses = {}
     

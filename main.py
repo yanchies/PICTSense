@@ -45,11 +45,6 @@ def main():
             st.subheader("Overview")
             visualise(final_df)
         
-        else:
-            if st.button("Generate a random sample of responses"):
-                generated_df = gen_df()
-                st.dataframe(generated_df)
-
     else:
         final_df = pd.read_json(st.session_state['json_file_path'])
         st.warning("File already uploaded.")
