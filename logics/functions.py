@@ -235,7 +235,7 @@ def gen_df():
                 model="gpt-4o-mini",
                 messages=[
                     {"role": "system", "content": "You are a reservist soldier who has just gone through a 2-week in-camp \
-                     military training."},
+                     military training. You might be unhappy about your experience or satisfied with it."},
                     {"role": "user", "content": f"Generate a survey feedback on the in-camp training, \
                      based the following type of issue: {categories[i%8]}. Do not generate headers."}
                 ],
