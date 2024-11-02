@@ -204,10 +204,10 @@ def summarize(response_summary):
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
-            {"role": "system", "content": "You are an assistant summarizing feedback in a concise and informative manner."},
-            {"role": "user", "content": f"Summarize the following responses that are delimited by <|>: {response_summary[:500]}"}
+            {"role": "system", "content": "You are an assistant summarizing feedback in a concise manner. Avoid mentioning specific feedback."},
+            {"role": "user", "content": f"Summarize the following responses in a concise manner: {response_summary[:500]}"}
         ],
-        max_tokens=50,
+        max_tokens=100,
         temperature=0.5,  # Lower temperature for concise summaries
     )
     
