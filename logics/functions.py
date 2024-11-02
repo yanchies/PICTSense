@@ -190,6 +190,7 @@ def visualise(df):
 
     st.divider()
     # pivot table
+    st.subheader("Summary of Sentiments and Responses by Topic")
     pivot_df = df.groupby("topic").agg(
     avg_sentiment=("sentiment", "mean"),
     count=("sentiment", "count"),
