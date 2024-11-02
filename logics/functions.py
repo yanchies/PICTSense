@@ -229,7 +229,7 @@ def gen_df():
         'Comaraderie & Morale',
     ]
     
-    for i in range(50):
+    for i in range(100):
         try:
             response = client.chat.completions.create(
                 model="gpt-4o-mini",
