@@ -195,7 +195,7 @@ def visualise(df):
     count=("sentiment", "count"),
     response_summary=("response", lambda x: " | ".join(x))).reset_index()
     pivot_df['response_summary'] = pivot_df['response_summary'].apply(summarize)
-    st.dataframe(pivot_df.sort_values(by="avg_sentiment", ascending=True))
+    st.table(pivot_df.sort_values(by="avg_sentiment", ascending=True))
 
 
 # Function to generate summary using OpenAI LLM
