@@ -236,7 +236,7 @@ def gen_df():
                 temperature=0.7  # Adjust creativity as needed
             )
             
-            response_text = response.choices[0].message['content']
+            response_text = response.choices[0].message.content.strip()
             response_id = f"response_{i+1}"
             responses[response_id] = response_text
         

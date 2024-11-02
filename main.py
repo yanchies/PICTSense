@@ -45,6 +45,22 @@ def main():
             st.subheader("Overview")
             visualise(final_df)
         
+        elif st.button("Generate Random Responses"):
+            generated_df = gen_df()
+            csv_file_path = "generated_responses.csv"
+            generated_df.to_csv(csv_file_path, index=False)
+            json_file_path = "generated_responses.json"
+            json_file_path = process_responses(generated_df, json_file_path)
+            st.session_state['json_file_path'] = json_file_path
+            final_df = pd.read_json(json_file_path)
+
+            # display dataframe
+            st.dataframe(final_df)
+
+            # display overview information
+            st.subheader("Overview")
+            visualise(final_df)
+
     else:
         final_df = pd.read_json(st.session_state['json_file_path'])
         st.warning("File already uploaded.")
