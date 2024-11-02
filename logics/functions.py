@@ -191,7 +191,7 @@ def visualise(df):
     st.divider()
     # pivot table
     pivot_df = df.groupby("topic").agg(
-    avg_sentiment=("sentiment", "mean").round(2),
+    avg_sentiment=("sentiment", "mean"),
     count=("sentiment", "count"),
     response_summary=("response", lambda x: " | ".join(x))).reset_index()
     pivot_df['response_summary'] = pivot_df['response_summary'].apply(summarize)
