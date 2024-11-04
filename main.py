@@ -51,7 +51,7 @@ def main():
             generated_df.to_csv(csv_file_path, index=False)
             json_file_path = "generated_responses.json"
             json_file_path = process_responses(generated_df, json_file_path)
-            st.session_state['file'] = json_file_path
+            st.session_state['json_file_path'] = json_file_path
             final_df = pd.read_json(json_file_path)
 
             # display dataframe
