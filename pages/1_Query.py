@@ -27,7 +27,7 @@ else:
     # use RetrievalQA to enable Document Query
     qa_chain = RetrievalQA.from_chain_type(
         ChatOpenAI(model='gpt-4o-mini'),
-        retriever=chroma_db.as_retriever(k=10),
+        retriever=chroma_db.as_retriever(k=5),
         return_source_documents=True,
         chain_type="stuff"
     )
